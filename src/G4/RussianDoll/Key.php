@@ -21,7 +21,7 @@ class Key
 
     public function addBelongsTo(\G4\RussianDoll\Key $key)
     {
-        $this->_belongsTo[] = $belongsTo;
+        $this->_belongsTo[] = $key;
         return $this;
     }
 
