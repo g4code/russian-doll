@@ -5,6 +5,15 @@ russian-doll
 
 ## Install
 
+Install through  [composer](https://getcomposer.org/) package manager.
+Find it on [packagist](https://packagist.org/packages/g4/russian-doll).
+
+    require: "g4/russian-doll": "*"
+    
+Dependencies:
+
+* g4/mcache: *
+
 ## Usage
 
 ## Development
