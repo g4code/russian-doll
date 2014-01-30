@@ -1,7 +1,7 @@
 russian-doll
 ======
 
-> russian-doll - [php](http://php.net) library
+> russian-doll - caching schema [php](http://php.net) library - inspired by [rails/cache_digests](https://github.com/rails/cache_digests)
 
 ## Install
 
