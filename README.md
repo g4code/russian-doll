@@ -10,9 +10,7 @@ Find it on [packagist](https://packagist.org/packages/g4/russian-doll).
 
     require: "g4/russian-doll": "*"
     
-Dependencies:
-
-* g4/mcache: *
+Dependency on [g4/mcache](https://github.com/g4code/mcache) package.
 
 ## Usage
 
