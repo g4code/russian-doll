@@ -15,6 +15,32 @@ Dependency:
 
 ## Usage
 
+Check mcache docs for details - [mcache](https://github.com/g4code/mcache/blob/master/README.md)
+
+```php
+<?php
+
+$mcache = \G4\Mcache\McacheFactory::createInstance($driverName, $options, $prefix);
+
+$key = \G4\RussianDoll\Key('posts');
+$key
+    ->addVariablePart($perPage)
+    ->addVariablePart($page);
+
+$russianDoll = new \G4\RussianDoll\RussianDoll($mcache);
+$russianDoll->setKey($key);
+
+// get data from cache
+$posts = $russianDoll->fetch();
+
+// write data to cache
+$russianDoll->write($posts);
+
+// invalidate cache entry
+$russianDoll->->expire();
+```
+
+
 ## Development
 
 ### Install dependencies
