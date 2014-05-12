@@ -14,7 +14,7 @@ class Key
 
     public function __construct($fixedPartSufix = '')
     {
-        $this->_fixedPartSufix = $fixedPartSufix;
+        $this->_setFixedPartSuffix($fixedPartSufix);
         $this->_belongsTo      = array();
         $this->_variableParts  = array();
     }
@@ -80,6 +80,14 @@ class Key
     public function setVariableParts(array $value)
     {
         $this->_variableParts = $value;
+        return $this;
+    }
+
+    private function _setFixedPartSuffix($value)
+    {
+        $this->_fixedPartSufix = is_array($value)
+            ? join(\G4\RussianDoll\Digestor::DELIMITER, $value)
+            : $value;
         return $this;
     }
 }
