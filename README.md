@@ -37,7 +37,7 @@ $posts = $russianDoll->fetch();
 $russianDoll->write($posts);
 
 // invalidate cache entry
-$russianDoll->->expire();
+$russianDoll->expire();
 ```
 
 
