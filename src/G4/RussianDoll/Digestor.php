@@ -21,8 +21,8 @@ class Digestor
     private $_mcache;
 
     /**
-     * unix timestamp
-     * @var int
+     * unix timestamp with microseconds
+     * @var string
      */
     private $_timePart;
 
@@ -53,7 +53,7 @@ class Digestor
 
     public function setNewTimePart()
     {
-        $this->_timePart = time();
+        $this->_timePart = microtime();
 
         $this->_mcache
             ->id($this->_getTimePartKey())
