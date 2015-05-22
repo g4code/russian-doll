@@ -34,7 +34,8 @@
     "phpunit/phpunit": "3.7.*"
   },
   "require": {
-    "php"       : ">=5.3.3",
-    "g4/mcache" : "*"
+    "php"         : ">=5.4",
+    "g4/constants": "*",
+    "g4/mcache"   : "*"
   }
 }
