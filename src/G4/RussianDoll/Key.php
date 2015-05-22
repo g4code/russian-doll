@@ -2,10 +2,17 @@
 
 namespace G4\RussianDoll;
 
+use \G4\Constants\CacheLifetime;
+
 class Key
 {
 
     private $_belongsTo;
+
+    /**
+     * @var int
+     */
+    private $cacheLifetime;
 
     private $_fixedPartSufix;
 
@@ -15,8 +22,9 @@ class Key
     public function __construct($fixedPartSufix = '')
     {
         $this->_setFixedPartSuffix($fixedPartSufix);
-        $this->_belongsTo      = array();
-        $this->_variableParts  = array();
+        $this->_belongsTo     = [];
+        $this->cacheLifetime  = CacheLifetime::TILL_THE_END_OF_TIME;
+        $this->_variableParts = [];
     }
 
     public function addBelongsTo(\G4\RussianDoll\Key $key)
@@ -49,6 +57,11 @@ class Key
         return $this->_belongsTo;
     }
 
+    public function getCacheLifetime()
+    {
+        return $this->cacheLifetime;
+    }
+
     public function getFixedPart()
     {
         return join(
@@ -70,6 +83,16 @@ class Key
     public function setBelongsTo(array $belongsTo)
     {
         $this->_belongsTo = $belongsTo;
+        return $this;
+    }
+
+    /**
+     * @param int $cacheLifetime
+     * @return \G4\RussianDoll\Key
+     */
+    public function setCacheLifetime($cacheLifetime)
+    {
+        $this->cacheLifetime = $cacheLifetime;
         return $this;
     }
 

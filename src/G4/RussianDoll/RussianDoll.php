@@ -51,6 +51,7 @@ class RussianDoll
         $this->_mcache
             ->object($data)
             ->id($this->_getDigestedKey())
+            ->expiration($this->_getKeyInstance()->getCacheLifetime())
             ->set();
     }
 

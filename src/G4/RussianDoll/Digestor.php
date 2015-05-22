@@ -58,6 +58,7 @@ class Digestor
         $this->_mcache
             ->id($this->_getTimePartKey())
             ->object($this->_timePart)
+            ->expiration($this->_key->getCacheLifetime())
             ->set();
 
         $this->_setNewTimePartOnDependencies();
