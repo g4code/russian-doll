@@ -7,29 +7,29 @@ use \G4\Constants\CacheLifetime;
 class Key
 {
 
-    private $_belongsTo;
+    private $belongsTo;
 
     /**
      * @var int
      */
     private $cacheLifetime;
 
-    private $_fixedPartSufix;
+    private $fixedPartSufix;
 
-    private $_variableParts;
+    private $variableParts;
 
 
     public function __construct($fixedPartSufix = '')
     {
-        $this->_setFixedPartSuffix($fixedPartSufix);
-        $this->_belongsTo     = [];
-        $this->cacheLifetime  = CacheLifetime::TILL_THE_END_OF_TIME;
-        $this->_variableParts = [];
+        $this->setFixedPartSuffix($fixedPartSufix);
+        $this->belongsTo     = [];
+        $this->cacheLifetime = CacheLifetime::TILL_THE_END_OF_TIME;
+        $this->variableParts = [];
     }
 
     public function addBelongsTo(\G4\RussianDoll\Key $key)
     {
-        $this->_belongsTo[] = $key;
+        $this->belongsTo[] = $key;
         return $this;
     }
 
@@ -39,22 +39,22 @@ class Key
      */
     public function addVariablePart($value)
     {
-        $this->_variableParts[] = $value;
+        $this->variableParts[] = $value;
         return $this;
     }
 
     public function appendToFixedPartSufix($value)
     {
-        $this->_fixedPartSufix = join(
+        $this->fixedPartSufix = join(
             \G4\RussianDoll\Digestor::DELIMITER,
-            array($this->_fixedPartSufix, $value)
+            array($this->fixedPartSufix, $value)
         );
         return $this;
     }
 
     public function getBelongsTo()
     {
-        return $this->_belongsTo;
+        return $this->belongsTo;
     }
 
     public function getCacheLifetime()
@@ -66,23 +66,23 @@ class Key
     {
         return join(
             \G4\RussianDoll\Digestor::DELIMITER,
-            array(get_class($this), $this->_fixedPartSufix)
+            array(get_class($this), $this->fixedPartSufix)
         );
     }
 
     public function getFixedPartSufix()
     {
-        return $this->_fixedPartSufix;
+        return $this->fixedPartSufix;
     }
 
     public function getVariableParts()
     {
-        return $this->_variableParts;
+        return $this->variableParts;
     }
 
     public function setBelongsTo(array $belongsTo)
     {
-        $this->_belongsTo = $belongsTo;
+        $this->belongsTo = $belongsTo;
         return $this;
     }
 
@@ -102,13 +102,13 @@ class Key
      */
     public function setVariableParts(array $value)
     {
-        $this->_variableParts = $value;
+        $this->variableParts = $value;
         return $this;
     }
 
-    private function _setFixedPartSuffix($value)
+    private function setFixedPartSuffix($value)
     {
-        $this->_fixedPartSufix = is_array($value)
+        $this->fixedPartSufix = is_array($value)
             ? join(\G4\RussianDoll\Digestor::DELIMITER, $value)
             : $value;
         return $this;

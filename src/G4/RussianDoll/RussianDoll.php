@@ -10,88 +10,88 @@ class RussianDoll
     /**
      * @var string
      */
-    private $_digestedKey;
+    private $digestedKey;
 
     /**
      * @var \G4\RussianDoll\Digestor
      */
-    private $_digestor;
+    private $digestor;
 
     /**
      * @var \G4\RussianDoll\Key
      */
-    private $_key;
+    private $key;
 
     /**
      * @var \G4\Mcache\Mcache
      */
-    private $_mcache;
+    private $mcache;
 
 
     public function __construct(\G4\Mcache\Mcache $mcache)
     {
-        $this->_mcache = $mcache;
+        $this->mcache = $mcache;
     }
 
     public function fetch()
     {
-        return $this->_mcache
-            ->id($this->_getDigestedKey())
+        return $this->mcache
+            ->id($this->getDigestedKey())
             ->get();
     }
 
     public function setKey(\G4\RussianDoll\Key $key)
     {
-        $this->_key = $key;
+        $this->key = $key;
         return $this;
     }
 
     public function write($data)
     {
-        $this->_mcache
+        $this->mcache
             ->object($data)
-            ->id($this->_getDigestedKey())
-            ->expiration($this->_getKeyInstance()->getCacheLifetime())
+            ->id($this->getDigestedKey())
+            ->expiration($this->getKeyInstance()->getCacheLifetime())
             ->set();
     }
 
     public function expire()
     {
-        unset($this->_digestedKey);
-        $this->_getDigestorInstance()->setNewTimePart();
+        unset($this->digestedKey);
+        $this->getDigestorInstance()->setNewTimePart();
     }
 
     /**
      * @return \G4\RussianDoll\Digestor
      */
-    private function _getDigestorInstance()
+    private function getDigestorInstance()
     {
-        if (!$this->_digestor instanceof \G4\RussianDoll\Digestor) {
-            $this->_digestor = new \G4\RussianDoll\Digestor($this->_getKeyInstance(), $this->_mcache);
+        if (!$this->digestor instanceof \G4\RussianDoll\Digestor) {
+            $this->digestor = new \G4\RussianDoll\Digestor($this->getKeyInstance(), $this->mcache);
         }
-        return $this->_digestor;
+        return $this->digestor;
     }
 
     /**
      * @return string
      */
-    private function _getDigestedKey()
+    private function getDigestedKey()
     {
-        if (!isset($this->_digestedKey)) {
-            $this->_digestedKey = $this->_getDigestorInstance()->digest();
+        if (!isset($this->digestedKey)) {
+            $this->digestedKey = $this->getDigestorInstance()->digest();
         }
-        return $this->_digestedKey;
+        return $this->digestedKey;
     }
 
     /**
      * @throws \Exception
      * @return \G4\RussianDoll\Key
      */
-    private function _getKeyInstance()
+    private function getKeyInstance()
     {
-        if (!$this->_key instanceof \G4\RussianDoll\Key) {
+        if (!$this->key instanceof \G4\RussianDoll\Key) {
             throw new \Exception('Key is not set and must be an instance of \G4\RussianDoll\Key');
         }
-        return $this->_key;
+        return $this->key;
     }
 }

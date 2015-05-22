@@ -13,30 +13,30 @@ class Digestor
     /**
      * @var \G4\RussianDoll\Key
      */
-    private $_key;
+    private $key;
 
     /**
      * @var \G4\Mcache\Mcache
      */
-    private $_mcache;
+    private $mcache;
 
     /**
      * unix timestamp with microseconds
      * @var string
      */
-    private $_timePart;
+    private $timePart;
 
     /**
      * @var string
      */
-    private $_timePartKey;
+    private $timePartKey;
 
 
     public function __construct(\G4\RussianDoll\Key $key, \G4\Mcache\Mcache $mcache)
     {
-        $this->_key         = $key;
-        $this->_mcache      = $mcache;
-        $this->_timePartKey = null;
+        $this->key         = $key;
+        $this->mcache      = $mcache;
+        $this->timePartKey = null;
     }
 
     public function digest()
@@ -44,75 +44,75 @@ class Digestor
         return join(
             self::DELIMITER,
             array(
-                $this->_getTimePartKey(),
-                $this->_getVariableParts(),
-                $this->_getTimePart()
+                $this->getTimePartKey(),
+                $this->getVariableParts(),
+                $this->getTimePart()
             )
         );
     }
 
     public function setNewTimePart()
     {
-        $this->_timePart = microtime();
+        $this->timePart = microtime();
 
-        $this->_mcache
-            ->id($this->_getTimePartKey())
-            ->object($this->_timePart)
-            ->expiration($this->_key->getCacheLifetime())
+        $this->mcache
+            ->id($this->getTimePartKey())
+            ->object($this->timePart)
+            ->expiration($this->key->getCacheLifetime())
             ->set();
 
-        $this->_setNewTimePartOnDependencies();
+        $this->setNewTimePartOnDependencies();
     }
 
-    private function _getKeyDependencies()
+    private function getKeyDependencies()
     {
-        $dependencies = $this->_key->getBelongsTo();
+        $dependencies = $this->key->getBelongsTo();
 
         return is_array($dependencies)
             ? $dependencies
             : array();
     }
 
-    private function _getVariableParts()
+    private function getVariableParts()
     {
         return join(
             self::DELIMITER,
-            $this->_key->getVariableParts()
+            $this->key->getVariableParts()
         );
     }
 
-    private function _getTimePart()
+    private function getTimePart()
     {
-        $this->_timePart = $this->_mcache->id($this->_getTimePartKey())->get();
+        $this->timePart = $this->mcache->id($this->getTimePartKey())->get();
 
-        if (empty($this->_timePart)) {
+        if (empty($this->timePart)) {
             $this->setNewTimePart();
         }
 
-        return $this->_timePart;
+        return $this->timePart;
     }
 
-    private function _getTimePartKey()
+    private function getTimePartKey()
     {
-        if ($this->_timePartKey === null) {
-            $this->_timePartKey = join(
+        if ($this->timePartKey === null) {
+            $this->timePartKey = join(
                 self::DELIMITER,
-                (array(__CLASS__, $this->_key->getFixedPart()))
+                (array(__CLASS__, $this->key->getFixedPart()))
             );
         }
-        return $this->_timePartKey;
+        return $this->timePartKey;
     }
 
-    private function _setNewTimePartOnDependencies()
+    private function setNewTimePartOnDependencies()
     {
-        foreach($this->_getKeyDependencies() as $key) {
-            $this->_setNewTimePartOnOneDependentKey($key);
+        foreach($this->getKeyDependencies() as $key) {
+            $this->setNewTimePartOnOneDependentKey($key);
         }
     }
 
-    private function _setNewTimePartOnOneDependentKey(\G4\RussianDoll\Key $key)
+    private function setNewTimePartOnOneDependentKey(\G4\RussianDoll\Key $key)
     {
-        $digestor = new self($key, $this->_mcache);
+        $digestor = new self($key, $this->mcache);
         $digestor
             ->setNewTimePart();
     }
