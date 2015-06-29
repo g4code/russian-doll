@@ -58,7 +58,7 @@ class RussianDoll
     public function expire()
     {
         unset($this->digestedKey);
-        $this->getDigestorInstance()->setNewTimePart();
+        $this->getDigestorInstance()->expire();
     }
 
     /**

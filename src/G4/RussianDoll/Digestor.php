@@ -41,17 +41,25 @@ class Digestor
 
     public function digest()
     {
-        return join(
-            self::DELIMITER,
-            array(
-                $this->getTimePartKey(),
-                $this->getVariableParts(),
-                $this->getTimePart()
-            )
-        );
+        return join(self::DELIMITER, $this->getComponentsForDigest());
     }
 
-    public function setNewTimePart()
+    public function expire()
+    {
+        $this->key->hasVariableParts()
+            ? $this->setNewTimePart()
+            : $this->delete();
+        $this->expireDependencies();
+    }
+
+    private function delete()
+    {
+        $this->mcache
+            ->id($this->getTimePartKey())
+            ->delete();
+    }
+
+    private function setNewTimePart()
     {
         $this->timePart = microtime();
 
@@ -60,17 +68,21 @@ class Digestor
             ->object($this->timePart)
             ->expiration($this->key->getCacheLifetime())
             ->set();
+    }
 
-        $this->setNewTimePartOnDependencies();
+    private function getComponentsForDigest()
+    {
+        return $this->key->hasVariableParts()
+            ? [$this->getTimePartKey(), $this->getVariableParts(), $this->getTimePart()]
+            : [$this->getTimePartKey()];
     }
 
     private function getKeyDependencies()
     {
         $dependencies = $this->key->getBelongsTo();
-
         return is_array($dependencies)
             ? $dependencies
-            : array();
+            : [];
     }
 
     private function getVariableParts()
@@ -97,23 +109,21 @@ class Digestor
         if ($this->timePartKey === null) {
             $this->timePartKey = join(
                 self::DELIMITER,
-                (array(__CLASS__, $this->key->getFixedPart()))
+                ([__CLASS__, $this->key->getFixedPart()])
             );
         }
         return $this->timePartKey;
     }
 
-    private function setNewTimePartOnDependencies()
+    private function expireDependencies()
     {
         foreach($this->getKeyDependencies() as $key) {
-            $this->setNewTimePartOnOneDependentKey($key);
+            $this->expireOneDependentKey($key);
         }
     }
 
-    private function setNewTimePartOnOneDependentKey(\G4\RussianDoll\Key $key)
+    private function expireOneDependentKey(\G4\RussianDoll\Key $key)
     {
-        $digestor = new self($key, $this->mcache);
-        $digestor
-            ->setNewTimePart();
+        (new self($key, $this->mcache))->expire();
     }
 }

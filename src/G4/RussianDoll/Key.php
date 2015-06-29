@@ -80,6 +80,11 @@ class Key
         return $this->variableParts;
     }
 
+    public function hasVariableParts()
+    {
+        return count($this->variableParts) > 0;
+    }
+
     public function setBelongsTo(array $belongsTo)
     {
         $this->belongsTo = $belongsTo;
