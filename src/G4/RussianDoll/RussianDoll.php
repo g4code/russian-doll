@@ -43,6 +43,7 @@ class RussianDoll
     public function setKey(\G4\RussianDoll\Key $key)
     {
         $this->key = $key;
+        unset($this->digestor);
         return $this;
     }
 
