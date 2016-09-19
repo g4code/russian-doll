@@ -6,7 +6,6 @@ use \G4\Mcache\Mcache;
 
 class RussianDoll
 {
-
     /**
      * @var string
      */
@@ -28,7 +27,7 @@ class RussianDoll
     private $mcache;
 
 
-    public function __construct(\G4\Mcache\Mcache $mcache)
+    public function __construct(Mcache $mcache)
     {
         $this->mcache = $mcache;
     }
@@ -40,7 +39,7 @@ class RussianDoll
             ->get();
     }
 
-    public function setKey(\G4\RussianDoll\Key $key)
+    public function setKey(Key $key)
     {
         $this->key = $key;
         $this->digestor = null;
@@ -67,8 +66,8 @@ class RussianDoll
      */
     private function getDigestorInstance()
     {
-        if (!$this->digestor instanceof \G4\RussianDoll\Digestor) {
-            $this->digestor = new \G4\RussianDoll\Digestor($this->getKeyInstance(), $this->mcache);
+        if (!$this->digestor instanceof Digestor) {
+            $this->digestor = new Digestor($this->getKeyInstance(), $this->mcache);
         }
         return $this->digestor;
     }
@@ -90,7 +89,7 @@ class RussianDoll
      */
     private function getKeyInstance()
     {
-        if (!$this->key instanceof \G4\RussianDoll\Key) {
+        if (!$this->key instanceof Key) {
             throw new \Exception('Key is not set and must be an instance of \G4\RussianDoll\Key');
         }
         return $this->key;

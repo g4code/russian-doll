@@ -2,32 +2,36 @@
 
 namespace G4\RussianDoll;
 
-use \G4\Constants\CacheLifetime;
-
 class Key
 {
+    const DEFAULT_CACHE_LIFE_TIME = 86400;
 
-    private $belongsTo;
+    /**
+     * @var array
+     */
+    private $belongsTo = [];
+
+    /**
+     * @var array
+     */
+    private $fixedPartSufix = [];
+
+    /**
+     * @var array
+     */
+    private $variableParts = [];
 
     /**
      * @var int
      */
-    private $cacheLifetime;
-
-    private $fixedPartSufix;
-
-    private $variableParts;
-
+    private $cacheLifetime = self::DEFAULT_CACHE_LIFE_TIME;
 
     public function __construct($fixedPartSufix = '')
     {
         $this->setFixedPartSuffix($fixedPartSufix);
-        $this->belongsTo     = [];
-        $this->cacheLifetime = CacheLifetime::TILL_THE_END_OF_TIME;
-        $this->variableParts = [];
     }
 
-    public function addBelongsTo(\G4\RussianDoll\Key $key)
+    public function addBelongsTo(Key $key)
     {
         $this->belongsTo[] = $key;
         return $this;
@@ -45,10 +49,7 @@ class Key
 
     public function appendToFixedPartSufix($value)
     {
-        $this->fixedPartSufix = join(
-            \G4\RussianDoll\Digestor::DELIMITER,
-            array($this->fixedPartSufix, $value)
-        );
+        $this->fixedPartSufix = join(Digestor::DELIMITER, [$this->fixedPartSufix, $value]);
         return $this;
     }
 
@@ -64,10 +65,7 @@ class Key
 
     public function getFixedPart()
     {
-        return join(
-            \G4\RussianDoll\Digestor::DELIMITER,
-            array(get_class($this), $this->fixedPartSufix)
-        );
+        return join(Digestor::DELIMITER, [get_class($this), $this->fixedPartSufix]);
     }
 
     public function getFixedPartSufix()
@@ -114,7 +112,7 @@ class Key
     private function setFixedPartSuffix($value)
     {
         $this->fixedPartSufix = is_array($value)
-            ? join(\G4\RussianDoll\Digestor::DELIMITER, $value)
+            ? join(Digestor::DELIMITER, $value)
             : $value;
         return $this;
     }
