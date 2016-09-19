@@ -7,7 +7,6 @@ use \G4\Mcache\Mcache;
 
 class Digestor
 {
-
     const DELIMITER = '|';
 
     /**
@@ -31,8 +30,7 @@ class Digestor
      */
     private $timePartKey;
 
-
-    public function __construct(\G4\RussianDoll\Key $key, \G4\Mcache\Mcache $mcache)
+    public function __construct(Key $key, Mcache $mcache)
     {
         $this->key         = $key;
         $this->mcache      = $mcache;
@@ -122,7 +120,7 @@ class Digestor
         }
     }
 
-    private function expireOneDependentKey(\G4\RussianDoll\Key $key)
+    private function expireOneDependentKey(Key $key)
     {
         (new self($key, $this->mcache))->expire();
     }
