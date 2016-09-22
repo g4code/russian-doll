@@ -43,6 +43,7 @@ class RussianDoll
     {
         $this->key = $key;
         $this->digestor = null;
+        $this->digestedKey = null;
         return $this;
     }
 
