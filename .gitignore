@@ -7,10 +7,11 @@
 *.gz
 
 composer.phar
-composer.lock
 vendor
+
+tests/unit/coverage/*
 
 .buildpath
 .project
-.settings
-.idea/
+.settings/*
+.idea/*
