@@ -26,7 +26,7 @@ class Key
      */
     private $cacheLifetime = self::DEFAULT_CACHE_LIFE_TIME;
 
-    public function __construct($fixedPartSufix = '')
+    public function __construct(...$fixedPartSufix)
     {
         $this->setFixedPartSuffix($fixedPartSufix);
     }
@@ -111,9 +111,7 @@ class Key
 
     private function setFixedPartSuffix($value)
     {
-        $this->fixedPartSufix = is_array($value)
-            ? join(Digestor::DELIMITER, $value)
-            : $value;
+        $this->fixedPartSufix = join(Digestor::DELIMITER, $value);
         return $this;
     }
 }
