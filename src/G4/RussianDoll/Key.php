@@ -49,7 +49,7 @@ class Key
 
     public function appendToFixedPartSufix($value)
     {
-        $this->fixedPartSufix = join(Digestor::DELIMITER, [$this->fixedPartSufix, $value]);
+        $this->fixedPartSufix = implode(Digestor::DELIMITER, [$this->fixedPartSufix, $value]);
         return $this;
     }
 
@@ -65,7 +65,7 @@ class Key
 
     public function getFixedPart()
     {
-        return join(Digestor::DELIMITER, [get_class($this), $this->fixedPartSufix]);
+        return implode(Digestor::DELIMITER, [get_class($this), $this->fixedPartSufix]);
     }
 
     public function getFixedPartSufix()
@@ -111,7 +111,16 @@ class Key
 
     private function setFixedPartSuffix($value)
     {
-        $this->fixedPartSufix = join(Digestor::DELIMITER, $value);
+        $this->fixedPartSufix = implode(Digestor::DELIMITER, $value);
         return $this;
+    }
+
+    public function __toString()
+    {
+        return implode('|', [
+            $this->getFixedPart(),
+            $this->getFixedPartSufix(),
+            $this->hasVariableParts() ? implode('|', $this->getVariableParts()) : null
+        ]);
     }
 }
