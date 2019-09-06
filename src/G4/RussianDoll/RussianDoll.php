@@ -49,6 +49,7 @@ class RussianDoll
 
     public function write($data)
     {
+        $this->getDigestedKey(); // duplicated call here because otherwise it will overwrite $data sent to mcache instance
         $this->mcache
             ->object($data)
             ->id($this->getDigestedKey())
